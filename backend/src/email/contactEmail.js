@@ -3,19 +3,19 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const sendMail = async (fullName, email, message) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.PASSWORD
-            }
-        })
-        const mailConfig = {
-            from: email,
-            to: process.env.EMAIL,
-            subject: "New Contact Message",
-            html: `
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+      }
+    })
+    const mailConfig = {
+      from: `${email}`,
+      to: process.env.EMAIL,
+      subject: "New Contact Message",
+      html: `
             <h3>New Message from Contact Form</h3>
             <p><b>Name: ${fullName}</p>
             <p>Email: ${email}</p>
@@ -136,9 +136,9 @@ export const sendMail = async (fullName, email, message) => {
 
 </body>
             `
-        }
-        await transporter.sendMail(mailConfig)
-    } catch (error) {
-        throw new Error("Email not sent")
     }
+    await transporter.sendMail(mailConfig)
+  } catch (error) {
+    throw new Error("Email not sent")
+  }
 }
