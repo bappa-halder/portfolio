@@ -42,6 +42,7 @@ const Contact = () => {
     }
 
     const verifyOtp = async () => {
+        const otpCode = otp.join("");
         if (!otp) {
             return toast.error("Enter OTP")
         }
@@ -49,11 +50,10 @@ const Contact = () => {
             setLoading(true)
             const response = await api.post("/contact/verifyOTP",
                 {
-                    email, otp
+                    email,
+                    otp: otpCode
                 }
             )
-            console.log(response.data.otp);
-            
             setEmailVerified(true)
             setShowOtp(false)
         } catch (error) {
