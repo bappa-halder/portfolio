@@ -247,7 +247,9 @@ const Contact = () => {
                                     />
                                     <div className="absolute top-1/2 right-2 transform -translate-y-1/2">
                                         {checkingEmail ? (
-                                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-yellow-500 border-t-transparent"></div>
+                                            <div className="bg-[#1a1a1a] h-5 w-5 flex justify-center items-center rounded-full">
+                                                <div className="h-4 w-4 animate-spin rounded-full border-2 border-yellow-500 border-t-transparent"></div>
+                                            </div>
                                         ) : emailVerified ? (
                                             <div className="flex items-center gap-2 rounded-md bg-yellow-500 px-3 py-2 text-xs font-semibold text-black">
                                                 <FiCheckCircle />
