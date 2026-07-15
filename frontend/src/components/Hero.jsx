@@ -106,22 +106,6 @@ const Hero = () => {
                     {/* Left */}
                     <div className="order-2 text-center lg:order-1 lg:text-left">
                         {/* Badge */}
-                        {/* <div
-                            className="
-                inline-flex items-center
-                rounded-full
-                border border-yellow-500/30
-                bg-[#111111]
-                px-4 py-2
-                text-[11px] sm:px-5 sm:text-xs
-                font-medium
-                text-yellow-300
-                shadow-[0_0_25px_rgba(212,175,55,0.18)]
-              "
-                        >
-                            ✦ Available for Freelance Work
-                        </div> */}
-
                         <div
                             className=" inline-flex items-center rounded-full border border-yellow-500/30 bg-[#111111] px-4 py-2 sm:px-5 text-[11px] sm:text-xs font-medium text-yellow-300 shadow-[0_0_25px_rgba(212,175,55,0.18)] "
                         >

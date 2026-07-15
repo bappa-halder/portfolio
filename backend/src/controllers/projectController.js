@@ -191,12 +191,12 @@ export const updateProject = async (req, res) => {
       : project.technologies;
 
     for (const tech of technologyList) {
-      const exists = await Skill.findOne({
+      const exists = await skillSchema.findOne({
         name: { $regex: new RegExp(`^${tech}$`, "i") },
       });
 
       if (!exists) {
-        await Skill.create({
+        await skillSchema.create({
           user: req.userId,
           name: tech,
           featured: false,

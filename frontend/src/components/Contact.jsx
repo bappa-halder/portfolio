@@ -85,7 +85,6 @@ const Contact = () => {
         newOtp[index] = value;
         setOtp(newOtp);
 
-        // Move to next input
         if (value && index < 3) {
             inputRef.current[index + 1].focus();
         }
@@ -319,15 +318,6 @@ const Contact = () => {
                                 />
                                 {errors.message && (<p>{errors.message.message}</p>)}
                             </div>
-
-                            {/* <button
-                                type="submit"
-                                className=" flex w-full items-center justify-center gap-2 sm:gap-3 rounded-xl bg-gradient-to-r from-[#FFD700] to-[#D4AF37] py-3 sm:py-4 text-sm sm:text-base font-semibold text-black transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(212,175,55,.45)] "
-                            >
-                                <FiSend />
-                                Send Message
-                            </button> */}
-
 
                             <button
                                 type="submit"
