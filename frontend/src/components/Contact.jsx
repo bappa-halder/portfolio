@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
     FiMail,
@@ -13,10 +13,13 @@ import toast from "react-hot-toast";
 const Contact = () => {
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm()
     const email = watch("email")
-    const [otp, setOtp] = useState("")
+    const [otp, setOtp] = useState(["", "", "", ""])
+    const inputRef = useRef([])
     const [showOtp, setShowOtp] = useState(false)
     const [emailVerified, setEmailVerified] = useState(false)
+    const [showSendOtp, setShowSendOtp] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [checkingEmail, setCheckingEmail] = useState(false)
 
     const sendOtp = async () => {
         if (!email) {
@@ -72,6 +75,57 @@ const Contact = () => {
             toast.error(error.response?.data?.message)
         }
     }
+    const handleOtpChange = (value, index) => {
+        if (!/^\d?$/.test(value)) return;
+
+        const newOtp = [...otp];
+        newOtp[index] = value;
+        setOtp(newOtp);
+
+        // Move to next input
+        if (value && index < 3) {
+            inputRef.current[index + 1].focus();
+        }
+    };
+    const handleKeyDown = (e, index) => {
+        if (e.key === "Backspace" && !otp[index] && index > 0) {
+            inputRef.current[index - 1].focus();
+        }
+    };
+    useEffect(() => {
+        if (!email || !/\S+@\S+\.\S+/.test(email)) {
+            setShowSendOtp(false);
+            setEmailVerified(false);
+            return;
+        }
+
+        const timer = setTimeout(async () => {
+            try {
+                setCheckingEmail(true);
+
+                const response = await api.post("/contact/checkEmail", {
+                    email,
+                });
+                console.log(response.data.isVerified);
+                
+                if (response.data.isVerified) {
+                    setEmailVerified(true);
+                    setShowSendOtp(false);
+                } else {
+                    setEmailVerified(false);
+                    setShowSendOtp(true);
+                }
+            } catch (error) {
+                setEmailVerified(false);
+                setShowSendOtp(true);
+            } finally {
+                setCheckingEmail(false);
+            }
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, [email]);
+
     return (
         <section
             id="contact"
@@ -184,55 +238,64 @@ const Contact = () => {
                                 <label className="mb-2 block text-sm text-gray-300">
                                     Email Address
                                 </label>
-
-                                <input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    {...register("email", { required: "Email is required" })}
-                                    className=" w-full rounded-xl border border-yellow-500/20 bg-[#1a1a1a] px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-white outline-none transition focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500/20 "
-                                />
-                                {!emailVerified ? (
-                                    <button
-                                        type="button"
-                                        onClick={sendOtp}
-                                        className="rounded-xl bg-yellow-500 px-5 text-black font-semibold"
-                                    >
-                                        {loading ? "Sending..." : "Verify"}
-                                    </button>
-                                ) : (
-                                    <div className="flex items-center gap-2 rounded-xl bg-green-600 px-4 text-white">
-                                        <FiCheckCircle />
-                                        Verified
+                                <div className="relative">
+                                    <input
+                                        type="email"
+                                        placeholder="Enter your email"
+                                        {...register("email", { required: "Email is required" })}
+                                        className=" w-full rounded-xl border border-yellow-500/20 bg-[#1a1a1a] px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-white outline-none transition focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500/20 "
+                                    />
+                                    <div className="absolute top-1/2 right-2 transform -translate-y-1/2">
+                                        {checkingEmail ? (
+                                            <span className="text-xs text-yellow-400">
+                                                Checking...
+                                            </span>
+                                        ) : emailVerified ? (
+                                            <div className="flex items-center gap-2 rounded-xl bg-green-600 px-4 py-2 text-white">
+                                                <FiCheckCircle />
+                                                Verified
+                                            </div>
+                                        ) : showSendOtp ? (
+                                            <button
+                                                type="button"
+                                                onClick={sendOtp}
+                                                className="rounded-md bg-yellow-500 px-3 py-2 text-xs font-semibold text-black"
+                                            >
+                                                Send OTP
+                                            </button>
+                                        ) : null}
                                     </div>
-                                )}
+                                </div>
                                 {showOtp && !emailVerified && (
-                                    <div className="space-y-3">
+                                    <div className="mt-6 space-y-3">
 
                                         <label className="text-sm text-gray-300">
                                             Enter OTP
                                         </label>
 
-                                        <div className="flex gap-3">
-
-                                            <input
-                                                type="text"
-                                                maxLength={4}
-                                                value={otp}
-                                                onChange={(e) =>
-                                                    setOtp(e.target.value.replace(/\D/g, ""))
-                                                }
-                                                placeholder="1234"
-                                                className="flex-1 rounded-xl border border-yellow-500/20 bg-[#1a1a1a] px-5 py-4 text-center tracking-[10px] text-xl text-white outline-none"
-                                            />
-
+                                        <div className="flex justify-between gap-3 flex-wrap">
+                                            <div className="space-x-3 flex-shrink-0">
+                                                {otp.map((digit, index) => (
+                                                    <input
+                                                        key={index}
+                                                        ref={(el) => (inputRef.current[index] = el)}
+                                                        type="text"
+                                                        inputMode="numeric"
+                                                        maxLength={1}
+                                                        value={digit}
+                                                        onChange={(e) => handleOtpChange(e.target.value, index)}
+                                                        onKeyDown={(e) => handleKeyDown(e, index)}
+                                                        className="sm:h-13 sm:w-13 h-11 w-11 rounded-xl border border-yellow-500/20 bg-[#1a1a1a] text-center sm:text-xl text-lg font-bold text-white outline-none transition focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500/20"
+                                                    />
+                                                ))}
+                                            </div>
                                             <button
                                                 type="button"
                                                 onClick={verifyOtp}
-                                                className="rounded-xl bg-green-600 px-5 font-semibold text-white"
+                                                className="rounded-xl bg-yellow-500 text-black py-2 px-5 font-semibold"
                                             >
-                                                Verify OTP
+                                                Verify
                                             </button>
-
                                         </div>
 
                                     </div>

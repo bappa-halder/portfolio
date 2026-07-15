@@ -53,6 +53,39 @@ import contactSchema from "../models/contactSchema.js"
 //     }
 // };
 
+export const checkEmail = async (req, res) => {
+    try {
+        const { email } = req.body
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: "Email is required"
+            })
+        }
+        const user = await contactSchema.findOne({ email })
+        if (!user) {
+            return res.status(200).json({
+                success: true,
+                isVerified: false
+            })
+        }
+        if (user.isVerified) {
+            return res.status(200).json({
+                success: true,
+                isVerified: true
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            isVerified: false
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 
 export const sendOTP = async (req, res) => {
     try {
