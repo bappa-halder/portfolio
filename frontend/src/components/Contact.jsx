@@ -226,7 +226,7 @@ const Contact = () => {
 
                                             <button
                                                 type="button"
-                                                onClick={verifyOTP}
+                                                onClick={verifyOtp}
                                                 className="rounded-xl bg-green-600 px-5 font-semibold text-white"
                                             >
                                                 Verify OTP
