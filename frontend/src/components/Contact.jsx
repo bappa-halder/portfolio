@@ -334,7 +334,7 @@ const Contact = () => {
                                 disabled={!emailVerified}
                                 className={`flex w-full items-center justify-center gap-2 rounded-xl py-4 font-semibold transition-all
         ${emailVerified
-                                        ? "bg-gradient-to-r from-[#FFD700] to-[#D4AF37] text-black hover:scale-[1.02]"
+                                        ? "bg-gradient-to-r from-[#FFD700] to-[#D4AF37] text-black hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(212,175,55,.45)]"
                                         : "cursor-not-allowed bg-gray-600 text-gray-300"
                                     }`}
                             >
