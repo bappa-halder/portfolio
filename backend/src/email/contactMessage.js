@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-export const sendMail = async (fullName, email, message) => {
+export const sendContactMessage = async (fullName, email, message) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -12,7 +12,7 @@ export const sendMail = async (fullName, email, message) => {
       }
     })
     const mailConfig = {
-      from: `${email}`,
+      from: email,
       to: process.env.EMAIL,
       subject: "New Contact Message",
       html: `

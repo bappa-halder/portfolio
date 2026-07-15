@@ -9,10 +9,18 @@ const contactSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    message: {
+    otp: {
         type: String,
-        required: true
+        default: null
+    },
+    otpExpires: {
+        type: Date,
+        default: null
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
     }
-});
+}, { timestamps: true });
 
 export default mongoose.model("contact", contactSchema);

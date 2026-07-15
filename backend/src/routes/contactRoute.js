@@ -1,8 +1,10 @@
 import express from "express";
-import { sendMessage } from "../controllers/contactController.js";
+import { sendMessage, sendOTP, verifyOTP } from "../controllers/contactController.js";
 
 const contactRoute = express.Router()
 
-contactRoute.post("/sendMessage", sendMessage)
+contactRoute.post("/sendOTP", sendOTP);
+contactRoute.post("/verifyOTP", verifyOTP);
+contactRoute.post("/sendMessage", sendMessage);
 
 export default contactRoute
