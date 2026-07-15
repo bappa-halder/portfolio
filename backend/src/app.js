@@ -31,18 +31,14 @@ app.use(
     })
 );
 
-//
-// 🛣️ Routes
-//
+// Routes
 
 app.use("/user", userRoute);
 app.use("/project", projectRoute);
 app.use("/contact", contactRoute);
 app.use("/skill", skillRoute)
 
-//
-// 🩺 Health check route
-//
+// Health check route
 
 app.get("/", (req, res) => {
     res.status(200).json({
@@ -51,9 +47,7 @@ app.get("/", (req, res) => {
     });
 });
 
-//
-// ❌ Global error handler (optional but good practice)
-//
+// Global error handler (optional but good practice)
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
