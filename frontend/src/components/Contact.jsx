@@ -107,7 +107,7 @@ const Contact = () => {
                     email,
                 });
                 console.log(response.data.isVerified);
-                
+
                 if (response.data.isVerified) {
                     setEmailVerified(true);
                     setShowSendOtp(false);
@@ -247,11 +247,9 @@ const Contact = () => {
                                     />
                                     <div className="absolute top-1/2 right-2 transform -translate-y-1/2">
                                         {checkingEmail ? (
-                                            <span className="text-xs text-yellow-400">
-                                                Checking...
-                                            </span>
+                                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-yellow-500 border-t-transparent"></div>
                                         ) : emailVerified ? (
-                                            <div className="flex items-center gap-2 rounded-xl bg-green-600 px-4 py-2 text-white">
+                                            <div className="flex items-center gap-2 rounded-md bg-yellow-500 px-3 py-2 text-xs font-semibold text-black">
                                                 <FiCheckCircle />
                                                 Verified
                                             </div>
