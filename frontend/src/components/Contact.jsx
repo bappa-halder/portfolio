@@ -32,6 +32,7 @@ const Contact = () => {
                     email
                 }
             )
+            toast.success(response.data.message)
             setShowOtp(true)
         } catch (error) {
             toast.error(error.response?.data?.message)
