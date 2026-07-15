@@ -52,6 +52,8 @@ const Contact = () => {
                     email, otp
                 }
             )
+            console.log(response.data.otp);
+            
             setEmailVerified(true)
             setShowOtp(false)
         } catch (error) {

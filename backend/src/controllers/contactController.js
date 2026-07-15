@@ -221,11 +221,6 @@ export const verifyOTP = async (req, res) => {
             });
         }
 
-        console.log("Stored OTP :", contact.otp);
-        console.log("Received OTP :", otp);
-        console.log("Stored Type :", typeof contact.otp);
-        console.log("Received Type :", typeof otp);
-
         if (contact.otp !== otp) {
             return res.status(400).json({
                 success: false,
