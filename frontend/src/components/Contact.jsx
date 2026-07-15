@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
     FiMail,
@@ -10,12 +10,63 @@ import api from "../api/axios";
 import toast from "react-hot-toast";
 
 const Contact = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm()
+    const { register, handleSubmit, formState: { errors }, reset, watch } = useForm()
+    const email = watch("email")
+    const [otp, setOtp] = useState("")
+    const [showOtp, setShowOtp] = useState(false)
+    const [emailVerified, setEmailVerified] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+    const sendOtp = async () => {
+        if (!email) {
+            return toast.error("Enter email first")
+        }
+        try {
+            setLoading(true)
+            const response = await api.post("/contact/sendOTP",
+                {
+                    email
+                }
+            )
+            setShowOtp(true)
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const verifyOtp = async () => {
+        if (!otp) {
+            return toast.error("Enter OTP")
+        }
+        try {
+            setLoading(true)
+            const response = await api.post("/contact/verifyOTP",
+                {
+                    email, otp
+                }
+            )
+            setEmailVerified(true)
+            setShowOtp(false)
+        } catch (error) {
+            toast.error(error.response?.data?.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     const handleMessage = async (data) => {
+        if (!emailVerified) {
+            return toast.error("please verify your email first")
+        }
         try {
             const response = await api.post("/contact/sendMessage", data)
             toast.success(response.data.message)
             reset()
+            setOtp("")
+            setShowOtp(false)
+            setEmailVerified(false)
         } catch (error) {
             toast.error(error.response?.data?.message)
         }
@@ -139,6 +190,52 @@ const Contact = () => {
                                     {...register("email", { required: "Email is required" })}
                                     className=" w-full rounded-xl border border-yellow-500/20 bg-[#1a1a1a] px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-white outline-none transition focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500/20 "
                                 />
+                                {!emailVerified ? (
+                                    <button
+                                        type="button"
+                                        onClick={sendOtp}
+                                        className="rounded-xl bg-yellow-500 px-5 text-black font-semibold"
+                                    >
+                                        {loading ? "Sending..." : "Verify"}
+                                    </button>
+                                ) : (
+                                    <div className="flex items-center gap-2 rounded-xl bg-green-600 px-4 text-white">
+                                        <FiCheckCircle />
+                                        Verified
+                                    </div>
+                                )}
+                                {showOtp && !emailVerified && (
+                                    <div className="space-y-3">
+
+                                        <label className="text-sm text-gray-300">
+                                            Enter OTP
+                                        </label>
+
+                                        <div className="flex gap-3">
+
+                                            <input
+                                                type="text"
+                                                maxLength={4}
+                                                value={otp}
+                                                onChange={(e) =>
+                                                    setOtp(e.target.value.replace(/\D/g, ""))
+                                                }
+                                                placeholder="1234"
+                                                className="flex-1 rounded-xl border border-yellow-500/20 bg-[#1a1a1a] px-5 py-4 text-center tracking-[10px] text-xl text-white outline-none"
+                                            />
+
+                                            <button
+                                                type="button"
+                                                onClick={verifyOTP}
+                                                className="rounded-xl bg-green-600 px-5 font-semibold text-white"
+                                            >
+                                                Verify OTP
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+                                )}
                                 {errors.email && (<p>{errors.email.message}</p>)}
                             </div>
 
@@ -156,13 +253,28 @@ const Contact = () => {
                                 {errors.message && (<p>{errors.message.message}</p>)}
                             </div>
 
-                            <button
+                            {/* <button
                                 type="submit"
                                 className=" flex w-full items-center justify-center gap-2 sm:gap-3 rounded-xl bg-gradient-to-r from-[#FFD700] to-[#D4AF37] py-3 sm:py-4 text-sm sm:text-base font-semibold text-black transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(212,175,55,.45)] "
                             >
                                 <FiSend />
                                 Send Message
+                            </button> */}
+
+
+                            <button
+                                type="submit"
+                                disabled={!emailVerified}
+                                className={`flex w-full items-center justify-center gap-2 rounded-xl py-4 font-semibold transition-all
+        ${emailVerified
+                                        ? "bg-gradient-to-r from-[#FFD700] to-[#D4AF37] text-black hover:scale-[1.02]"
+                                        : "cursor-not-allowed bg-gray-600 text-gray-300"
+                                    }`}
+                            >
+                                <FiSend />
+                                Send Message
                             </button>
+
                         </form>
                     </div>
                 </div>
