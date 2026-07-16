@@ -63,7 +63,7 @@ export const addProject = async (req, res) => {
       featured: featured === "true" || featured === true,
       image,
     });
-
+    
     return res.status(201).json({
       success: true,
       message: "Project added successfully",
