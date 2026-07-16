@@ -66,7 +66,7 @@ export const getAllSkills = async (req, res) => {
     try {
         const skills = await Skill.find().sort({
             order: 1,
-            createdAt: -1,
+            createdAt: 1,
         });
 
         const projects = await Project.find();
