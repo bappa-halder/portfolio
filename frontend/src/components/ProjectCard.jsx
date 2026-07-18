@@ -12,7 +12,7 @@ const ProjectCard = React.memo(({ project }) => {
                     alt={project.title}
                     loading="lazy"
                     decoding="async"
-                    className="h-52 sm:h-60 md:h-[14rem] w-full object-cover object-top transition duration-700 group-hover:scale-110"
+                    className="h-52 sm:h-60 md:h-[14rem] w-full object-cover object-top transition duration-700 group-hover:scale-105"
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />

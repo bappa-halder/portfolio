@@ -51,6 +51,7 @@ export const addProject = async (req, res) => {
         });
       }
     }
+
     const project = await projectSchema.create({
       user: userId,
       title,
@@ -69,6 +70,7 @@ export const addProject = async (req, res) => {
       message: "Project added successfully",
       data: project,
     });
+    
   } catch (error) {
     return res.status(500).json({
       success: false,
