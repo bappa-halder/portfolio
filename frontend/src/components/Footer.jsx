@@ -117,7 +117,7 @@ const Footer = () => {
                     </p>
 
                     <a
-                        href="#home"
+                        href="/"
                         className=" mx-auto md:mx-0 flex h-11 w-11 sm:h-12 sm:w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#FFD700] to-[#D4AF37] text-lg sm:text-xl text-black transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(212,175,55,.45)] "
                     >
                         <FaArrowUp />
