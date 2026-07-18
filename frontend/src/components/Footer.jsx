@@ -9,7 +9,7 @@ import {
 
 const Footer = () => {
     const links = [
-        { name: "Home", href: "#home" },
+        { name: "Home", href: "" },
         { name: "About", href: "#about" },
         { name: "Skills", href: "#skills" },
         { name: "Projects", href: "#projects" },
@@ -19,20 +19,12 @@ const Footer = () => {
     const socials = [
         {
             icon: <FaGithub />,
-            href: "https://github.com/yourusername",
+            href: "https://github.com/",
         },
         {
             icon: <FaLinkedin />,
-            href: "https://linkedin.com/in/yourusername",
-        },
-        {
-            icon: <FaInstagram />,
-            href: "https://instagram.com/yourusername",
-        },
-        {
-            icon: <FaFacebookF />,
-            href: "https://facebook.com/yourusername",
-        },
+            href: "https://in.linkedin.com/",
+        }
     ];
 
     return (
