@@ -24,7 +24,15 @@ const Footer = () => {
         {
             icon: <FaLinkedin />,
             href: "https://in.linkedin.com/",
-        }
+        },
+        {
+            icon: <FaInstagram />,
+            href: "https://www.instagram.com/",
+        },
+        {
+            icon: <FaFacebookF />,
+            href: "https://www.facebook.com/",
+        },
     ];
 
     return (
