@@ -6,11 +6,11 @@ const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const navLinks = [
-        { name: "Home", href: "#home" },
-        { name: "About", href: "#about" },
-        { name: "Skills", href: "#skills" },
-        { name: "Projects", href: "#projects" },
-        { name: "Contact", href: "#contact" },
+        { name: "Home", href: "" },
+        { name: "About", href: "about" },
+        { name: "Skills", href: "skills" },
+        { name: "Projects", href: "projects" },
+        { name: "Contact", href: "contact" },
     ];
 
     return (
