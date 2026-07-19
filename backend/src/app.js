@@ -24,9 +24,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS setup (important for frontend + cookies)
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    process.env.ADMIN_URL
+]
 app.use(
     cors({
-        origin: process.env.CLIENT_URL || "http://localhost:8000",
+        origin: allowedOrigins,
         credentials: true,
     })
 );
