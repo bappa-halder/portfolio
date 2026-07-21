@@ -13,10 +13,6 @@ dotenv.config();
 
 const app = express();
 
-//
-// 🔧 Middlewares
-//
-
 // JSON parser
 app.use(express.json());
 
